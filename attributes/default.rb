@@ -48,6 +48,13 @@ default['rabbitmq']['ssl_key'] = '/path/to/key.pem'
 #virtualhosts
 default['rabbitmq']['virtualhosts'] = []
 
+#users
+default['rabbitmq']['enabled_users'] = 
+  [{ name => "guest", password => "guest", rights => 
+    [{vhost => nil , conf => ".*", write => ".*", read => ".*"}]
+  }]
+default['rabbitmq']['disabled_users'] =[] 
+
 # SmartOS-specific defaults
 if node[:platform] == 'smartos'
   default['rabbitmq']['service_name'] = 'rabbitmq'
