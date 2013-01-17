@@ -69,7 +69,6 @@ when 'smartos'
   service node['rabbitmq']['service_name'] do
     action :start
   end
-
 end
 
 directory node['rabbitmq']['mnesiadir'] do
@@ -124,10 +123,20 @@ template "#{node['rabbitmq']['config_root']}/rabbitmq-env.conf" do
   notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
 end
 
+custom_conf = Hash.new
+%w(custom_conf).each do |a|
+  node[:rabbitmq][a].to_hash.each do |k,v|
+    custom_conf[k] = v.to_erl("  ", 0)
+  end
+end
+
 template "#{node['rabbitmq']['config_root']}/rabbitmq.config" do
   source 'rabbitmq.config.erb'
   owner 'root'
   group 'root'
   mode 00644
+  variables({
+    :custom_conf => custom_conf
+  })
   notifies :restart, "service[#{node['rabbitmq']['service_name']}]"
 end
