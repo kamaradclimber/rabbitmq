@@ -34,7 +34,7 @@ enabled_users.each do |user|
   end
   rabbitmq_user user['name'] do
     user_tag user['tag']
-    action :set_user_tag
+    action :set_user_tags
     notifies :restart, resources(:service => node['rabbitmq']['service_name'])
   end
   user['rights'].each  do |r|
