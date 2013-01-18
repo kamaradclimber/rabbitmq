@@ -37,7 +37,7 @@ enabled_users.each do |user|
     action :set_user_tag
     notifies :restart, resources(:service => node['rabbitmq']['service_name'])
   end
-  user['rights'].each { |r| do
+  user['rights'].each  do |r|
     rabbitmq_user user['name'] do
       vhost r['vhost']
       permissions "\"#{r['conf']}\" \"#{r['write']}\" \"#{r['read']}\""
@@ -45,7 +45,6 @@ enabled_users.each do |user|
     notifies :restart, resources(:service => node['rabbitmq']['service_name'])
     end
   end
-  }
 end
 
 disabled_users = node['rabbitmq']['disabled_users']
