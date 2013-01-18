@@ -36,7 +36,24 @@ end
 action :set_permissions do
   if new_resource.vhost
     execute "rabbitmqctl set_permissions -p #{new_resource.vhost} #{new_resource.user} #{new_resource.permissions}" do
-      not_if "rabbitmqctl list_user_permissions | grep #{new_resource.user}"
+      not_if {
+        cmd = Mixlib::ShellOut.new (
+          "rabbitmqctl list_user_permissions -p #{new_resource.vhost} #{new_resource.user} | grep ^#{new_resource.user}")
+        cmd.run_command
+        begin
+          cmd.error!
+        rescue
+          Chef::Log.warn "Rabbit is probably not installed yet"
+          return true
+        end
+        cmd.stdout.each_line do |line|
+          Chef::Log.info "Rights for #{new_resource.user} are #{line} (we want #{new_resource.permissions})"
+          if line == new_resource.permissions
+            return true
+          end
+        end
+        return false
+      }
       Chef::Log.info "Setting RabbitMQ user permissions for '#{new_resource.user}' on vhost #{new_resource.vhost}."
       new_resource.updated_by_last_action(true)
     end

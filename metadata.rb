@@ -76,11 +76,23 @@ attribute "rabbitmq/virtualhosts",
 attribute "rabbitmq/enabled_users",
   :display_name => "Users and their rights on rabbitmq instance",
   :description => "Users and description of their rights",
-  :default => [{ name => "guest", password => "guest", rights => [{vhost => nil , conf => ".*", write => ".*", read => ".*"}]}],
+  :default => [{ :name => "guest", :password => "guest", :rights => [{:vhost => nil , :conf => ".*", :write => ".*", :read => ".*"}]}],
   :type => "array"
 
 attribute "rabbitmq/disabled_users",
   :display_name => "Disabled users",
   :description => "List all users that will be deactivated",
+  :default => [],
+  :type => "array"
+
+attribute "rabbitmq/enabled_plugins",
+  :display_name => "Enabled plugins",
+  :description => "List all plugins that will be activated",
+  :default => [],
+  :type => "array"
+
+attribute "rabbitmq/disabled_plugins",
+  :display_name => "Disabled plugins",
+  :description => "List all plugins that will be deactivated",
   :default => [],
   :type => "array"
