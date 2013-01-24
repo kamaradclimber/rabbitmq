@@ -31,7 +31,7 @@ end
 
 def user_has_tag?(name, tag)
   tag = '"\[\]"' if tag.nil?
-  cmdStr = "rabbitmqctl list_users | grep ^#{name} | grep #{tag}"
+  cmdStr = "rabbitmqctl list_users | grep \"^#{name}\\b\" | grep #{tag}"
   cmd = Mixlib::ShellOut.new(cmdStr)
   cmd.environment['HOME'] = ENV.fetch('HOME', '/root')
   cmd.run_command
@@ -45,9 +45,9 @@ end
 
 def user_has_rights?(vhost,name,perm_list)
   if vhost.nil?
-    cmdStr = "rabbitmqctl list_permissions | grep ^#{name}"
+    cmdStr = "rabbitmqctl list_permissions | grep \"^#{name}\\b\""
   else
-    cmdStr = "rabbitmqctl list_permissions -p  #{vhost} | grep ^#{name}"
+    cmdStr = "rabbitmqctl list_permissions -p  #{vhost} | grep \"^#{name}\\b\""
   end
   cmd = Mixlib::ShellOut.new(cmdStr)
   cmd.environment['HOME'] = ENV.fetch('HOME', '/root')
