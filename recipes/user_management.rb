@@ -19,10 +19,6 @@
 
 include_recipe "rabbitmq::default"
 include_recipe "rabbitmq::virtualhost_management"
-#default['rabbitmq']['enabled_users'] = 
-#  [{ name => "guest", password => "guest", rights => 
-#    [{vhost => nil , conf => ".*", write => ".*", read => ".*"}]
-#  }]
 
 enabled_users = node['rabbitmq']['enabled_users']
 
