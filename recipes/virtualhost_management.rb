@@ -24,7 +24,6 @@ service_name = node['rabbitmq']['service_name']
 virtualhosts.each do |virtualhost|
   rabbitmq_vhost virtualhost do
     action :add
-    notifies :restart, "service[#{service_name}]"
   end
 end
 
